@@ -1,4 +1,12 @@
+@import "~bootstrap/scss/bootstrap";
+
+:root {
+    --primary: black;
+    --secondary: white;
+
+}
+
 body {
-    background-color: rgb(202, 12, 12);
+    background-color: var(--primary);
     color: #BFAC3F;
 }
