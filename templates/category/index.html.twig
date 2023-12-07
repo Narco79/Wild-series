@@ -6,15 +6,15 @@
 
 <h1>Toutes les categories</h1>
 {% for category in categories %}
-   <h2> {{ loop.index }} / {{ category.name }}</h2>
+   <h2> {{ loop.index }} /{{ category.name }}</h2>
+   
+       Voir categorie:<a href="{{ path("category_show", {categoryName: category.name }) }}"> {{ category.name }}</a>
 
-   <a href="{{ path("category_show", {categoryName: category.name }) }}"
-    Voir categorie: {{ category.name }}
-</a>
 {% endfor %}
+<div>
 <a href="{{ path('app_index') }}">
     Retour a l'accueil
 </a>
-
+</div>
 
 {% endblock %}

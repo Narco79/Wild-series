@@ -7,47 +7,28 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Faker\Factory;
+
 class SeasonFixtures extends Fixture implements DependentFixtureInterface
 {
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $season = new Season();
-        $season->setNumber(1);
-        $season->setProgram($this->getReference('program_Walking dead'));
-        $season->setYear('2011');
-        $season->setDescription('Cette saison suit les aventures de Rick Grimes,
-        depuis sa sortie du coma et sa découverte des « rôdeurs » (mort-vivants),
-        après une épidémie post-apocalyptique jusqu\'à l\'explosion du CDC d\'Atlanta,
-        dans lequel lui et son groupe s\'était réfugié.');
-        $this->addReference('season1_Walking dead', $season);
-        $manager->persist($season);
-
-        $season = new Season();
-        $season->setNumber(2);
-        $season->setProgram($this->getReference('program_Walking dead'));
-        $season->setYear('2012');
-        $season->setDescription('Cette saison suit les aventures de Rick Grimes et son groupe,
-        depuis leur rencontre avec une horde de « rôdeurs » sur une autoroute,
-        entraînant la disparition de Sophia Peletier,
-        jusqu\'à leur fuite de la ferme des Greene qui est envahie par les « rôdeurs »');
-
-        $this->addReference('season2_Walking dead', $season);
-        $manager->persist($season);
-
-        $season = new Season();
-        $season->setNumber(3);
-        $season->setProgram($this->getReference('program_Walking dead'));
-        $season->setYear('2013');
-        $season->setDescription('Cette saison suit les aventures de Rick Grimes,
-        depuis l\'arrivée de son groupe dans une prison qu\'ils nettoient de tout les rôdeurs qui s\'y trouvent
-        jusqu\'à l\'accueil des derniers habitants de Woodbury à la prison après une attaque du Gouverneur sur celle-ci');
-
-        $this->addReference('season3_Walking dead', $season);
-        $manager->persist($season);
+        $faker = Factory::create();
+        for ($s = 0; $s <= 5; $s++) {
+            for ($i = 0; $i < 5; $i++) {
+                $season = new Season();
+                $season->setNumber($faker->numberBetween(1, 5));
+                $season->setYear($faker->year());
+                $season->setDescription($faker->paragraphs(3, true));
+                $season->setProgram($this->getReference('program_' . $s));
+                $this->setReference('season_' . ($s % 25 + 1), $season);
+                $manager->persist($season);
+            }
+        }
         $manager->flush();
     }
-    public function getDependencies()
+    public function getDependencies(): array
     {
         // Tu retournes ici toutes les classes de fixtures dont ProgramFixtures dépend
         return [
