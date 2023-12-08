@@ -11,18 +11,59 @@ use Faker\Factory;
 
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
 {
+    public const PROGRAMS = [
+        [
+            'title' => 'Walking dead',
+            'synopsis' => 'lorem',
+            'country' => 'USA',
+            'year' => 2011,
+            'category' => 'Horreur',
+            'reference' => 'program_1'
+        ], [
+            'title' => 'Walker texas',
+            'synopsis' => 'lorem',
+            'country' => 'USA',
+            'year' => 1999,
+            'category' => 'Action',
+            'reference' => 'program_2'
+        ], [
+            'title' => 'oggy ',
+            'synopsis' => 'lorem',
+            'country' => 'France',
+            'year' => 2011,
+            'category' => 'Animation',
+            'reference' => 'program_3'
+        ], [
+            'title' => 'Pamela Rose',
+            'synopsis' => 'lorem',
+            'country' => 'France',
+            'year' => 2023,
+            'category' => 'Humour',
+            'reference' => 'program_4'
+        ], [
+            'title' => 'Walking',
+            'synopsis' => 'lorem',
+            'country' => 'USA',
+            'year' => 2015,
+            'category' => 'Aventure',
+            'reference' => 'program_5'
+        ]
+    ];
     public function load(ObjectManager $manager)
 
     {
+
         $faker = Factory::create();
-        for ($i = 0; $i <= 5; $i++) {
+        foreach (self::PROGRAMS as $programName) {
+
             $program = new Program();
-            $program->setTitle($faker->realText(10));
-            $program->setSynopsis($faker->realText(200));
-            $program->setCountry($faker->realText(50));
-            $program->setYear($i);
+            $program->setTitle($programName['title']);
+            $program->setSynopsis($programName['synopsis']);
+            $program->setCountry($programName['country']);
+            $program->setYear($programName['year']);
+            $program->setCategory($this->getReference('category_' . $programName['category']));
             $manager->persist($program);
-            $this->addReference('program_' . $i, $program);
+            $this->addReference($programName['reference'], $program);
         }
         $manager->flush();
     }
