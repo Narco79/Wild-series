@@ -33,7 +33,8 @@ class EpisodeController extends AbstractController
             $entityManager->persist($episode);
             $entityManager->flush();
 
-            return $this->redirectToRoute('index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'The new episode has been created');
+            return $this->redirectToRoute('episode_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('episode/new.html.twig', [
@@ -59,6 +60,7 @@ class EpisodeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'The episode has been modified');
             return $this->redirectToRoute('episode_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -75,7 +77,7 @@ class EpisodeController extends AbstractController
             $entityManager->remove($episode);
             $entityManager->flush();
         }
-
+        $this->addFlash('danger', 'The episode has been deleted');
         return $this->redirectToRoute('episode_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -3,12 +3,18 @@
 {% block title %}All programs{% endblock %}
 
 {% block body %}
-<h1>Toutes les séries de la table program: </h1>
+<h1>Toutes les séries : </h1>
 {% for program in programs %}
     <div>
         <h2>{{ loop.index }} / <a href="{{ path("program_show", { id: program.id }) }}">{{ program.title }}</a>- Categorie : {{ program.category.name }}</h2>
         <p>{{ program.synopsis }}</p>
     </div>
+     <td>
+                    <a href="{{ path('program_show', {'id': program.id}) }}">show</a>
+                    <a href="{{ path('program_edit', {'id': program.id}) }}">edit</a>
+                        {{ include('program/_delete_form.html.twig') }}
+
+                </td>
 {% else %}
     Aucune série trouvée.
 {% endfor %}
