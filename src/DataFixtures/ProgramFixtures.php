@@ -2,15 +2,23 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Program;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Persistence\ObjectManager;
-
 use Faker\Factory;
+use App\Entity\Program;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
 {
+    private SluggerInterface $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+
+
     public const PROGRAMS = [
         [
             'title' => 'Walking dead',
@@ -56,12 +64,16 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         $faker = Factory::create();
         foreach (self::PROGRAMS as $programName) {
 
+
+
             $program = new Program();
             $program->setTitle($programName['title']);
             $program->setSynopsis($programName['synopsis']);
             $program->setCountry($programName['country']);
             $program->setYear($programName['year']);
             $program->setCategory($this->getReference('category_' . $programName['category']));
+            $slug = $this->slugger->slug($program->getTitle());
+            $program->setSlug($slug);
             $manager->persist($program);
             $this->addReference($programName['reference'], $program);
         }

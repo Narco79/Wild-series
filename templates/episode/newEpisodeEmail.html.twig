@@ -1,0 +1,9 @@
+{% extends 'layoutEmail.html.twig' %}
+
+{% block title %}Nouvel épisode{% endblock %}
+
+{% block body %}
+<h1>New episode {{ episode.title }} created</h1>
+    <p>Hello, the new episode {{ episode.title }} has been created on Wild Series</p>
+    <a href="http://127.0.0.1:8000/program/show/Walking-dead">Voir série</a>
+{% endblock %}
